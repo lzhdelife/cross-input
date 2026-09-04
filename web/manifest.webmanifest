@@ -1,0 +1,9 @@
+{
+  "name": "跨屏输入",
+  "short_name": "跨屏输入",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#17324d",
+  "lang": "zh-CN"
+}

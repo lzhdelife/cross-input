@@ -1,0 +1,209 @@
+:root {
+  color-scheme: light;
+  font-family: "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --navy: #17324d;
+  --green: #16866b;
+  --green-dark: #0d6954;
+  --ink: #213543;
+  --muted: #71808b;
+  --surface: #f4f6f8;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  overscroll-behavior: none;
+}
+
+button { font: inherit; letter-spacing: 0; -webkit-tap-highlight-color: transparent; }
+
+.app-shell {
+  min-height: 100dvh;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: max(20px, env(safe-area-inset-top)) 24px max(26px, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+}
+
+.topbar h1 { margin: 0; font-size: 23px; line-height: 1.25; letter-spacing: 0; }
+.topbar p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+.topbar .network-hint { margin-top: 3px; font-size: 12px; }
+
+.status-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 5px rgba(22, 134, 107, .13);
+}
+
+.status-dot.connecting { background: #d99614; box-shadow: 0 0 0 5px rgba(217, 150, 20, .13); }
+.status-dot.offline { background: #c24c42; box-shadow: 0 0 0 5px rgba(194, 76, 66, .13); }
+
+.text-entry {
+  align-self: start;
+  width: 100%;
+  margin: 52px 0 20px;
+}
+
+.input-wrap { position: relative; }
+
+#imeInput {
+  display: block;
+  width: 100%;
+  min-height: 230px;
+  max-height: 44dvh;
+  padding: 18px 52px 18px 18px;
+  border: 1px solid #c7d1d7;
+  border-radius: 8px;
+  outline: 0;
+  resize: none;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 17px;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+#imeInput:disabled {
+  background: #e9edf0;
+  color: #8a969e;
+}
+
+#imeInput:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(22, 134, 107, .13);
+}
+
+#imeInput::placeholder { color: #9aa6ad; }
+
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #e8edef;
+  color: #526674;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease, background .15s ease;
+}
+
+.clear-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.clear-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.clear-button:active:not(:disabled) { background: #d8e0e4; }
+.clear-button:disabled { opacity: 0; pointer-events: none; }
+
+.activity {
+  min-height: 20px;
+  margin: 7px 2px 0;
+  color: var(--muted);
+  text-align: left;
+  font-size: 12px;
+}
+
+.key-actions,
+.attachment-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.key-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.key-actions { margin-top: 16px; }
+.attachment-actions { margin-top: 10px; }
+
+.action-button,
+.attachment-button {
+  min-width: 0;
+  border: 1px solid #c7d1d7;
+  border-radius: 8px;
+  background: white;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.action-button {
+  min-height: 64px;
+  padding: 8px 10px;
+}
+
+.attachment-button {
+  min-height: 48px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.action-button.primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+}
+
+.action-button svg,
+.attachment-button svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.action-button span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.action-button strong { font-size: 15px; line-height: 1.25; }
+.action-button small { margin-top: 2px; font-size: 10px; font-weight: 400; opacity: .7; }
+.action-button:active:not(:disabled), .attachment-button:active:not(:disabled) { transform: translateY(1px); }
+.action-button:disabled, .attachment-button:disabled { background: #e9edf0; color: #929da5; border-color: #d7dde1; }
+.hidden-input { display: none; }
+
+@media (max-height: 660px) {
+  .app-shell { padding-top: 12px; padding-bottom: 15px; }
+  .text-entry { margin: 28px 0 10px; }
+  #imeInput { min-height: 140px; }
+}

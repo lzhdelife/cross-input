@@ -17,9 +17,10 @@ from tkinter import messagebox
 import qrcode
 from aiohttp import WSMsgType, web
 from PIL import Image, ImageTk
+import pystray
 
 
-APP_NAME = "跨屏输入"
+APP_NAME = "跨屏输入助手"
 PORT = 8765
 WEB_DIR = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) / "web"
 ICON_PATH = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) / "app_icon.ico"
@@ -378,8 +379,11 @@ class DesktopApp:
         self.url = f"http://{self.ip}:{PORT}/?token={self.token}"
         self.server = InputServer(self.token, self.handle_event)
         self.qr_image = None
+        self.tray_icon = None
+        self.exiting = False
         self.build_ui()
         self.server.start()
+        self.start_tray()
 
     def build_ui(self):
         header = tk.Frame(self.root, bg="#17324d", height=104)
@@ -460,7 +464,38 @@ class DesktopApp:
             self.status_label.config(text="启动失败")
             self.activity_label.config(text=f"端口 {PORT} 被占用，请关闭其他实例后重试")
 
+    def start_tray(self):
+        icon_image = Image.open(ICON_PATH) if ICON_PATH.exists() else Image.new("RGBA", (64, 64), "#17324d")
+
+        def show_window(icon, item):
+            self.root.after(0, self.show_window)
+
+        def exit_app(icon, item):
+            self.root.after(0, self.exit_app)
+
+        menu = pystray.Menu(
+            pystray.MenuItem("显示窗口", show_window, default=True),
+            pystray.MenuItem("退出", exit_app),
+        )
+        self.tray_icon = pystray.Icon(APP_NAME, icon_image, APP_NAME, menu)
+        threading.Thread(target=self.tray_icon.run, daemon=True).start()
+
+    def show_window(self):
+        self.root.deiconify()
+        self.root.lift()
+        self.root.focus_force()
+
     def close(self):
+        if self.exiting:
+            return
+        self.root.withdraw()
+
+    def exit_app(self):
+        if self.exiting:
+            return
+        self.exiting = True
+        if self.tray_icon:
+            self.tray_icon.stop()
         self.server.stop()
         self.root.destroy()
 

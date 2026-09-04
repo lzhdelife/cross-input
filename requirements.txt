@@ -1,3 +1,4 @@
 aiohttp==3.12.15
 Pillow>=12.2.0,<13
 qrcode==8.2
+pystray>=0.19.5,<1
