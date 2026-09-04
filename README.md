@@ -26,7 +26,6 @@
 
 ![手机端输入界面](assets/phone-input-demo.png)
 
-![应用图标](assets/app-icon.png)
 
 ## 注意事项
 
